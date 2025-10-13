@@ -1,9 +1,18 @@
+import { BrowserRouter } from "react-router";
 import "./App.css";
+import AuthProvider from "./context/auth/AuthProvider";
+import { AppRouter } from "./router/AppRouter";
 
 function App() {
   return (
     <>
-      <h1>hola</h1>
+      <div>
+        <BrowserRouter>
+          <AuthProvider>
+            <AppRouter />
+          </AuthProvider>
+        </BrowserRouter>
+      </div>
     </>
   );
 }
