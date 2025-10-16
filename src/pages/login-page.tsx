@@ -1,7 +1,34 @@
-import React from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useAuth } from "../hooks/useAuth";
+import LogoutButton from "../components/LogoutButton";
 
 const Login = () => {
+  const { user, name, setName, setEmail, email, login } = useAuth();
+  const navigate = useNavigate();
+
+  if (user) {
+    return (
+      <div className="container text-center" style={{ padding: "2rem" }}>
+        <h2 className="mb-4">
+          Ya has iniciado sesión como {user?.name || user?.email}
+        </h2>
+        <LogoutButton />
+        <div className="mt-3">
+          <Link to="/" className="btn btn-dark">
+            Volver al inicio
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Lógica de autenticación real
+    login(name, email);
+    navigate("/");
+  };
+
   return (
     <div
       className="container d-flex align-items-center justify-content-center"
@@ -14,7 +41,7 @@ const Login = () => {
         <h2 className="mb-4 text-center" style={{ color: "#ffb347" }}>
           Iniciar Sesión
         </h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="email" className="form-label text-start d-block ">
               Correo electrónico
@@ -24,6 +51,9 @@ const Login = () => {
               className="form-control"
               id="email"
               placeholder="Ingresa tu correo"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           <div className="mb-4">
@@ -38,6 +68,9 @@ const Login = () => {
               className="form-control"
               id="password"
               placeholder="Contraseña"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
             />
           </div>
           <button
@@ -53,7 +86,11 @@ const Login = () => {
           </button>
         </form>
         <div className="mt-3 d-flex align-items-center justify-content-between">
-          <Link to="/register" className="d-block text-center">
+          <Link
+            to="/register"
+            className="d-block text-center"
+            style={{ color: "#ffb347" }}
+          >
             ¿No tienes cuenta? Regístrate
           </Link>
           <Link to="/" className="btn btn-dark">

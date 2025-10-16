@@ -1,9 +1,28 @@
-import { Link } from "react-router";
+import { useNavigate, Link } from "react-router";
+import { useAuth } from "../hooks/useAuth";
+import { useState } from "react";
 
 const SignUp = () => {
+  const { login } = useAuth();
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Validación básica
+    if (!name || !email) return alert("Por favor completa todos los campos.");
+
+    // Llamada correcta (solo dos argumentos)
+    login(name, email);
+
+    navigate("/");
+  };
+
   return (
     <div
-      className="container d-flex justify-content-center  align-items-center"
+      className="container d-flex align-items-center justify-content-center"
       style={{ minHeight: "80vh" }}
     >
       <div
@@ -13,36 +32,36 @@ const SignUp = () => {
         <h2 className="mb-4 text-center" style={{ color: "#ffb347" }}>
           Crear Cuenta
         </h2>
-        <form>
-          <div className="mb-4">
-            <label className="form-label text-start d-block  ">
-              Email address
+        <form onSubmit={handleSubmit}>
+          {/* Nombre */}
+          <div className="mb-3">
+            <label htmlFor="name" className="form-label">
+              Nombre
             </label>
             <input
-              type="email"
-              className="form-control "
-              id="exampleFormControlInput1"
-              placeholder="name@example.com"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="form-label text-start d-block ">Password</label>
-            <input
-              type="email"
+              type="text"
               className="form-control"
-              id="exampleFormControlInput1"
-              placeholder="enter your password"
+              id="name"
+              placeholder="Tu nombre"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
             />
           </div>
-          <div className="mb-4">
-            <label className="form-label text-start d-block ">
-              Confirm Password
+
+          {/* Correo electrónico */}
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">
+              Correo Electrónico
             </label>
             <input
               type="email"
               className="form-control"
-              id="exampleFormControlInput1"
-              placeholder="enter your password"
+              id="email"
+              placeholder="Tu correo electrónico"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
 
@@ -58,11 +77,12 @@ const SignUp = () => {
             Registrarse
           </button>
         </form>
-        <div className="mt-3 d-flex align-items-center justify-content-between">
+
+        <div className="mt-3 d-flex justify-content-between">
           <Link to="/login" style={{ color: "#ffb347" }}>
             ¿Ya tienes cuenta? Inicia sesión
           </Link>
-          <Link to="/" className="btn btn-dark">
+          <Link to="/" style={{ color: "#ffb347" }}>
             Volver al inicio
           </Link>
         </div>

@@ -1,23 +1,21 @@
 import { Link } from "react-router";
+import { useAuth } from "../hooks/useAuth";
+import LogoutButton from "./LogoutButton";
 
 const Navbar = () => {
+  const { user } = useAuth();
+
   return (
-    <nav
-      className="navbar navbar-expand-lg"
-      style={{
-        background: "linear-gradient(90deg, #ffb347 0%, #ffcc33 100%)",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
-      }}
-    >
-      <div className="container-fluid">
+    <nav className="container navbar navbar-expand-lg ">
+      <div className="container-fluid py-1 ">
         {/* Logo */}
-        <a
+        <Link
           className="navbar-brand d-flex align-items-center"
-          href="#"
+          to="/"
           style={{
             fontWeight: "bold",
             fontSize: "1.5rem",
-            color: "#fff",
+            color: "#294F85",
             letterSpacing: "2px",
           }}
         >
@@ -26,22 +24,31 @@ const Navbar = () => {
             height="32"
             viewBox="0 0 32 32"
             fill="none"
-            style={{ marginRight: "0.5rem" }}
+            style={{
+              marginRight: "0.5rem",
+            }}
           >
-            <circle cx="16" cy="16" r="16" fill="#fffbe7" />
+            <circle cx="16" cy="16" r="16" fill="#000000" />
             <text
               x="8"
               y="22"
               fontSize="16"
-              fill="#ffb347"
+              fill="#ffffff"
               fontFamily="Arial"
               fontWeight="bold"
+              style={{
+                objectPosition: "center",
+                alignItems: "center",
+                flex: "center",
+                justifyContent: "center",
+                textAlign: "center",
+              }}
             >
               L
             </text>
           </svg>
           LoginAuth
-        </a>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -57,10 +64,10 @@ const Navbar = () => {
           className="collapse navbar-collapse justify-content-end"
           id="navbarNav"
         >
-          <ul className="navbar-nav align-items-center">
+          <ul className="navbar-nav align-items-center text-black ">
             <li className="nav-item">
               <a
-                className="nav-link text-white fw-medium px-3"
+                className="nav-link fw-medium px-3"
                 href="#"
                 style={{ transition: "color 0.2s" }}
               >
@@ -69,7 +76,7 @@ const Navbar = () => {
             </li>
             <li className="nav-item">
               <a
-                className="nav-link text-white fw-medium px-3"
+                className="nav-link  fw-medium px-3"
                 href="#"
                 style={{ transition: "color 0.2s" }}
               >
@@ -78,16 +85,33 @@ const Navbar = () => {
             </li>
             <li className="nav-item">
               <a
-                className="nav-link text-white fw-medium px-3"
+                className="nav-link  fw-medium px-3"
                 href="#"
                 style={{ transition: "color 0.2s" }}
               >
                 Contacto
               </a>
             </li>
-            <Link className="btn btn-dark" to={"/login"}>
-              Iniciar Sesión
-            </Link>
+
+            {user ? (
+              <div className="d-flex align-items-center">
+                <span className="me-3  text-white bg-black px-2 py-2 rounded ">
+                  {" "}
+                  {user.name}
+                </span>
+                <LogoutButton />
+              </div>
+            ) : (
+              <li className="nav-item">
+                <Link
+                  to="/login"
+                  className="btn text-white"
+                  style={{ backgroundColor: "#294F85" }}
+                >
+                  Iniciar sesión
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>
